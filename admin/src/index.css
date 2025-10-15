@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background-color: #F1F5F9;
+    color: #64748B;
+  }
+}
+
+@layer components {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .text-bodydark {
+    color: #64748B;
+  }
+
+  .text-bodydark1 {
+    color: #DEE4EE;
+  }
+
+  .text-bodydark2 {
+    color: #8A99AF;
+  }
+
+  .bg-whiten {
+    background-color: #F1F5F9;
+  }
+
+  .bg-graydark {
+    background-color: #333A48;
+  }
+
+  .chat-height {
+    @apply h-[calc(100vh_-_8.125rem)] lg:h-[calc(100vh_-_5.625rem)];
+  }
+
+  .inbox-height {
+    @apply h-[calc(100vh_-_8.125rem)] lg:h-[calc(100vh_-_5.625rem)];
+  }
+}
+
+@layer utilities {
+  .bg-gradient-primary {
+    background: linear-gradient(90deg, #3C50E0 0%, #259AE6 100%);
+  }
+}

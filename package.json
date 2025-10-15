@@ -1,0 +1,26 @@
+{
+  "name": "game-center",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "admin",
+    "api",
+    "shared"
+  ],
+  "scripts": {
+    "dev:admin": "npm run dev --workspace=admin",
+    "dev:api": "npm run dev --workspace=api",
+    "dev": "concurrently \"npm run dev:admin\" \"npm run dev:api\"",
+    "build:admin": "npm run build --workspace=admin",
+    "build:api": "npm run build --workspace=api",
+    "build": "npm run build:admin && npm run build:api",
+    "test": "npm run test --workspaces",
+    "lint": "npm run lint --workspaces"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "uuid": "^13.0.0"
+  }
+}
