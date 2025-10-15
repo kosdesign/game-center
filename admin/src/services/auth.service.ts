@@ -1,5 +1,5 @@
 import apiService from './api.service'
-import { LoginRequest, LoginResponse, ApiResponse } from '@shared/types'
+import { LoginRequest, LoginResponse } from '@shared/types'
 
 class AuthService {
   async login(credentials: LoginRequest): Promise<LoginResponse> {

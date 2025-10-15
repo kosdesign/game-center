@@ -49,7 +49,7 @@ export class AdminController {
     }
   }
 
-  getAllAdmins = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  getAllAdmins = async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const admins = await this.adminService.getAllAdmins()
 

@@ -9,7 +9,7 @@ export class GameParentController {
     this.gameParentService = new GameParentService()
   }
 
-  getAllGameParents = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  getAllGameParents = async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const games = await this.gameParentService.getAllGameParents()
 

@@ -25,7 +25,6 @@ export class AuthService {
     await this.adminRepository.updateLastLogin(username)
 
     const secret = process.env.JWT_SECRET || 'your-super-secret-key-change-this-in-production'
-    const expiresIn = process.env.JWT_EXPIRES_IN || '24h'
 
     const token = jwt.sign(
       {
@@ -34,7 +33,7 @@ export class AuthService {
         role: admin.role
       },
       secret,
-      { expiresIn }
+      { expiresIn: '24h' }
     )
 
     return {

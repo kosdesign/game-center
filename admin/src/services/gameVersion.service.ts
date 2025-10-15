@@ -5,10 +5,13 @@ export interface GameVersion {
   game_id: string
   game_version: string
   description: string
-  port: number
+  port_type: 'fixed' | 'range'
+  port?: number
+  port_start?: number
+  port_end?: number
   api_url: string
   type: GameType
-  match_making_url: string
+  match_making_url?: string
   server_game_ip: string
   server_game_type: ServerGameType
   is_active: boolean

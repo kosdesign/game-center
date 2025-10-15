@@ -3,6 +3,7 @@ import apiService from './api.service'
 export interface GameParent {
   game_id: string
   game_name: string
+  api_token: string
   is_active: boolean
   created_at: string
   updated_at: string

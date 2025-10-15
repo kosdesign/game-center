@@ -1,5 +1,5 @@
 import { AdminRepository } from '../repositories/Admin.repository'
-import { Admin, CreateAdminInput, UpdateAdminInput } from '@shared/types'
+import { CreateAdminInput, UpdateAdminInput } from '@shared/types'
 
 export interface AdminResponse {
   admin_id: string
