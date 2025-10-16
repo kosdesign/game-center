@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": "/Users/thanaponpruektan/Desktop/game-center",
+    "paths": {
+      "@/*": ["api/src/*"],
+      "@shared/*": ["shared/*"]
+    }
+  }
+}

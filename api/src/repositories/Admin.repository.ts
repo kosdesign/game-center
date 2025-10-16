@@ -1,7 +1,7 @@
 import { AdminModel, AdminDocument } from '../models/Admin.model'
 import { Admin } from '@shared/types'
 import bcrypt from 'bcrypt'
-import { v4 as uuidv4 } from 'uuid'
+import { randomUUID } from 'crypto'
 
 export class AdminRepository {
   async findByUsername(username: string): Promise<AdminDocument | null> {
@@ -23,7 +23,7 @@ export class AdminRepository {
   async create(data: Partial<Admin> & { password: string }): Promise<AdminDocument> {
     const passwordHash = await bcrypt.hash(data.password, 10)
     const admin = new AdminModel({
-      admin_id: uuidv4(),
+      admin_id: randomUUID(),
       username: data.username,
       email: data.email,
       password_hash: passwordHash,
