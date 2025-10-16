@@ -24,7 +24,7 @@ const limiter = rateLimit({
 
 const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',')
-  : ['http://localhost:3000', 'https://admin-game-center.nakamoto.games']
+  : ['http://localhost:3000', 'https://admin-game-center.nakamoto.games', 'https://game-center.nakamoto.games/']
 
 app.use(cors({
   origin: (origin, callback) => {
