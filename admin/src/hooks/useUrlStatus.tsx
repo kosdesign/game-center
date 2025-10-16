@@ -1,19 +1,25 @@
 import { useState, useEffect } from 'react'
 
-interface UrlStatus {
-  [url: string]: 'online' | 'offline' | 'checking'
+export interface UrlStatusInfo {
+  status: 'online' | 'offline' | 'checking'
+  statusCode?: number
+  statusText?: string
+}
+
+interface UrlStatusMap {
+  [url: string]: UrlStatusInfo
 }
 
 export const useUrlStatus = (urls: string[]) => {
-  const [statuses, setStatuses] = useState<UrlStatus>({})
+  const [statuses, setStatuses] = useState<UrlStatusMap>({})
 
   useEffect(() => {
     if (urls.length === 0) return
 
     // Set all to checking initially
-    const initialStatuses: UrlStatus = {}
+    const initialStatuses: UrlStatusMap = {}
     urls.forEach(url => {
-      initialStatuses[url] = 'checking'
+      initialStatuses[url] = { status: 'checking' }
     })
     setStatuses(initialStatuses)
 
@@ -23,18 +29,46 @@ export const useUrlStatus = (urls: string[]) => {
         const controller = new AbortController()
         const timeoutId = setTimeout(() => controller.abort(), 5000) // 5s timeout
 
-        await fetch(url, {
+        const response = await fetch(url, {
           method: 'HEAD',
-          mode: 'no-cors',
-          signal: controller.signal
+          mode: 'no-cors'
         })
 
         clearTimeout(timeoutId)
 
-        // With no-cors, we can't read the status, but if fetch succeeds, URL is reachable
-        setStatuses(prev => ({ ...prev, [url]: 'online' }))
+        // With no-cors mode, we can't read status but successful fetch means reachable
+        setStatuses(prev => ({
+          ...prev,
+          [url]: {
+            status: 'online',
+            statusText: 'Reachable'
+          }
+        }))
       } catch (error) {
-        setStatuses(prev => ({ ...prev, [url]: 'offline' }))
+        // Try with CORS to get actual status code
+        try {
+          const response = await fetch(url, {
+            method: 'HEAD'
+          })
+
+          // Any response (even 4xx, 5xx) means URL is reachable
+          setStatuses(prev => ({
+            ...prev,
+            [url]: {
+              status: 'online',
+              statusCode: response.status,
+              statusText: response.statusText
+            }
+          }))
+        } catch (corsError) {
+          setStatuses(prev => ({
+            ...prev,
+            [url]: {
+              status: 'offline',
+              statusText: error instanceof Error ? error.message : 'Failed to fetch'
+            }
+          }))
+        }
       }
     })
   }, [urls.join(',')])

@@ -50,19 +50,29 @@ const TailDashboard = () => {
   const urlStatuses = useUrlStatus(allUrls)
 
   const getStatusIcon = (url: string) => {
-    const status = urlStatuses[url]
+    const statusInfo = urlStatuses[url]
 
-    if (status === 'checking') {
+    if (!statusInfo) {
+      return <span className="inline-flex h-3 w-3 rounded-full bg-bodydark" title="Unknown"></span>
+    }
+
+    if (statusInfo.status === 'checking') {
       return (
         <span className="inline-flex h-3 w-3 animate-pulse rounded-full bg-warning" title="Checking..."></span>
       )
-    } else if (status === 'online') {
+    } else if (statusInfo.status === 'online') {
+      const title = statusInfo.statusCode
+        ? `${statusInfo.statusCode} ${statusInfo.statusText || ''}`
+        : 'Online'
       return (
-        <span className="inline-flex h-3 w-3 rounded-full bg-success" title="Online"></span>
+        <span className="inline-flex h-3 w-3 rounded-full bg-success" title={title}></span>
       )
     } else {
+      const title = statusInfo.statusCode
+        ? `${statusInfo.statusCode} ${statusInfo.statusText || ''}`
+        : statusInfo.statusText || 'Offline'
       return (
-        <span className="inline-flex h-3 w-3 rounded-full bg-danger" title="Offline"></span>
+        <span className="inline-flex h-3 w-3 rounded-full bg-danger" title={title}></span>
       )
     }
   }
