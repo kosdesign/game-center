@@ -1,17 +1,5 @@
-import axios from 'axios'
+import apiService from './api.service'
 import { CreateAdminInput, UpdateAdminInput } from '@shared/types'
-
-const api = axios.create({
-  baseURL: '/api'
-})
-
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('auth_token')
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
-  }
-  return config
-})
 
 export interface AdminResponse {
   admin_id: string
@@ -24,26 +12,35 @@ export interface AdminResponse {
 
 export const adminService = {
   async getAdmins(): Promise<AdminResponse[]> {
-    const response = await api.get('/admin/admins')
-    return response.data.data
+    const response = await apiService.get<AdminResponse[]>('/admin/admins')
+    return response.data || []
   },
 
   async getAdmin(adminId: string): Promise<AdminResponse> {
-    const response = await api.get(`/admin/admins/${adminId}`)
-    return response.data.data
+    const response = await apiService.get<AdminResponse>(`/admin/admins/${adminId}`)
+    if (!response.data) {
+      throw new Error('Admin not found')
+    }
+    return response.data
   },
 
   async createAdmin(data: CreateAdminInput): Promise<AdminResponse> {
-    const response = await api.post('/admin/admins', data)
-    return response.data.data
+    const response = await apiService.post<AdminResponse>('/admin/admins', data)
+    if (!response.data) {
+      throw new Error('Failed to create admin')
+    }
+    return response.data
   },
 
   async updateAdmin(adminId: string, data: UpdateAdminInput): Promise<AdminResponse> {
-    const response = await api.put(`/admin/admins/${adminId}`, data)
-    return response.data.data
+    const response = await apiService.put<AdminResponse>(`/admin/admins/${adminId}`, data)
+    if (!response.data) {
+      throw new Error('Failed to update admin')
+    }
+    return response.data
   },
 
   async deleteAdmin(adminId: string): Promise<void> {
-    await api.delete(`/admin/admins/${adminId}`)
+    await apiService.delete(`/admin/admins/${adminId}`)
   }
 }
