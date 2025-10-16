@@ -107,7 +107,6 @@ const GameVersionForm = ({ open, onClose, onSubmit, version, mode, gameId, gameN
                 type="text"
                 value={formData.game_version}
                 onChange={(e) => handleChange('game_version', e.target.value)}
-                disabled={mode === 'edit'}
                 placeholder="1.0"
                 className="w-full rounded border border-stroke bg-transparent py-3 px-4 text-black dark:text-white"
               />
