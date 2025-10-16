@@ -1,12 +1,13 @@
 import axios, { AxiosInstance } from 'axios'
 import { ApiResponse } from '@shared/types'
+import { env } from '../config/env'
 
 class ApiService {
   private api: AxiosInstance
 
   constructor() {
     this.api = axios.create({
-      baseURL: '/api',
+      baseURL: env.apiUrl + '/api',
       headers: {
         'Content-Type': 'application/json'
       }
