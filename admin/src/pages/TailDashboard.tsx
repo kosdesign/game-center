@@ -38,12 +38,33 @@ const TailDashboard = () => {
   const [detailVersion, setDetailVersion] = useState<GameVersion | null>(null)
   const [apiDocsOpen, setApiDocsOpen] = useState(false)
 
-  // Filter versions based on selected filters
-  const filteredVersions = versions.filter(version => {
-    if (typeFilter && version.type !== typeFilter) return false
-    if (protocolFilter && version.server_game_type !== protocolFilter) return false
-    return true
-  })
+  // Filter versions based on selected filters and sort by version number descending
+  const filteredVersions = versions
+    .filter(version => {
+      if (typeFilter && version.type !== typeFilter) return false
+      if (protocolFilter && version.server_game_type !== protocolFilter) return false
+      return true
+    })
+    .sort((a, b) => {
+      // Sort by version number descending (newest version first)
+      // Parse semantic version (e.g., "1.2.3" -> [1, 2, 3])
+      const parseVersion = (v: string) => {
+        return v.split('.').map(num => parseInt(num) || 0)
+      }
+
+      const versionA = parseVersion(a.game_version)
+      const versionB = parseVersion(b.game_version)
+
+      // Compare each segment
+      for (let i = 0; i < Math.max(versionA.length, versionB.length); i++) {
+        const numA = versionA[i] || 0
+        const numB = versionB[i] || 0
+        if (numB !== numA) {
+          return numB - numA
+        }
+      }
+      return 0
+    })
 
   // Collect all URLs from filtered versions for status checking
   const allUrls = filteredVersions.flatMap(v => [v.api_url, v.match_making_url].filter(Boolean) as string[])
